@@ -11,11 +11,19 @@ import user_management as dbHandler
 app = Flask(__name__)
 # Enable CORS to allow cross-origin requests (needed for CSRF demo in Codespaces)
 
-# CORS(app)  -- I REMOVED CORS(app) BECAUSE THIS IS GLOBAL MEANING IT CAN BE 
-#               ACCESSED EVERYWHERE
+# CORS(app)  -- #1  Enabling CORS globally allows any external website to send requests to the application. 
+#                   This increases the risk of Cross-Site Request Forgery (CSRF) attacks, where malicious websites 
+#                   can trick users into performing actions without their consent. Therefore it should be restricted  
+#                   or removed.
 
 
-@app.route("/success.html", methods=["POST", "GET", "PUT", "PATCH", "DELETE"])
+@app.route("/success.html", methods=["GET", "POST"])
+#     -- #2  Methods like PUT, PATCH and DELETE are designed to update or remove data, but in this application they
+#            are not needed. If these methods are left enabled, attackers could try to use them to send unexpected or
+#            harmful requests to the server. By limiting the application to only the GET and POST methods, which are
+#            the only ones required for viewing pages and submitting forms, the number of possible ways the system
+#            can be attacked is reduced.   
+
 def addFeedback():
     if request.method == "GET" and request.args.get("url"):
         url = request.args.get("url", "")
