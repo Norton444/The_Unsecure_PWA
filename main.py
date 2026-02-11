@@ -8,6 +8,11 @@ import user_management as dbHandler
 from werkzeug.security import generate_password_hash
 #    -- #4
 
+from markupsafe import escape
+#    -- #5
+
+# --------------------------------------------------------------------------------------------------------------------------
+
 # Code snippet for logging a message
 # app.logger.critical("message")
 
@@ -92,7 +97,16 @@ def home():
         return render_template("/index.html", msg=msg)
     elif request.method == "POST":
         username = request.form["username"]
-        password = request.form["password"]
+
+
+        msg = escape(request.args.get("msg", ""))
+        return render_template("/index.html", msg=msg)
+#       -- #5 If a user types something like <script>alert("hack")</script> into the msg field, the browser will try to 
+#             run it as code instead of just showing it as text. This is called Cross-Site Scripting (XSS). Hackers can 
+#             use Cross site scripting(XSS) to steal cookies, change the webpage. By using escape(), Python converts 
+#             special characters like < and > into safe symbols, so the browser treats them as normal text instead of code.
+#             This stops the script from running and keeps your website and users data safe.
+
         isLoggedIn = dbHandler.retrieveUsers(username, password)
         if isLoggedIn:
             dbHandler.listFeedback()
