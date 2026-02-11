@@ -121,3 +121,11 @@ if __name__ == "__main__":
     app.config["TEMPLATES_AUTO_RELOAD"] = True
     app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
     app.run(debug=True, host="0.0.0.0", port=5000)
+    # app.config["TEMPLATES_AUTO_RELOAD"] = True
+    # app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
+    app.run(debug=False, host="0.0.0.0", port=5000)
+#     -- #6 I turned debug mode off in my Flask app by setting debug=False. This makes the app more secure because 
+#           debug mode shows detailed error messages, system paths, and other internal info that a hacker could use to
+#           attack the app. If debug is left on, someone could even try to run code through the debugger. By turning it off,
+#           the app still works for my classroom demo, but it hides sensitive information and reduces the risk of someone 
+#           exploiting it.
