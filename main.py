@@ -10,8 +10,10 @@ import user_management as dbHandler
 
 app = Flask(__name__)
 # Enable CORS to allow cross-origin requests (needed for CSRF demo in Codespaces)
-CORS(app) 
-# main vulnerabiliyy cuz global, can be accesse everywhere
+
+# CORS(app)  -- I REMOVED CORS(app) BECAUSE THIS IS GLOBAL MEANING IT CAN BE 
+#               ACCESSED EVERYWHERE
+
 
 @app.route("/success.html", methods=["POST", "GET", "PUT", "PATCH", "DELETE"])
 def addFeedback():
