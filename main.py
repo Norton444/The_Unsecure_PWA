@@ -11,10 +11,13 @@ import user_management as dbHandler
 app = Flask(__name__)
 # Enable CORS to allow cross-origin requests (needed for CSRF demo in Codespaces)
 
+
 # CORS(app)  -- #1  Enabling CORS globally allows any external website to send requests to the application. 
 #                   This increases the risk of Cross-Site Request Forgery (CSRF) attacks, where malicious websites 
 #                   can trick users into performing actions without their consent. Therefore it should be restricted  
 #                   or removed.
+
+
 
 
 @app.route("/success.html", methods=["GET", "POST"])
@@ -29,8 +32,10 @@ def addFeedback():
         url = request.args.get("url", "")
         return redirect(url, code=302)
     if request.method == "POST":
+
         feedback = request.form["feedback"]
         dbHandler.insertFeedback(feedback)
+        
         dbHandler.listFeedback()
         return render_template("/success.html", state=True, value="Back")
     else:
@@ -44,7 +49,17 @@ def signup():
         url = request.args.get("url", "")
         return redirect(url, code=302)
     if request.method == "POST":
-        username = request.form["username"]
+
+
+        username = request.form.get('username', '').strip()
+        if not username or len(username) > 50:
+            return "Invalid input", 400
+#       -- #3 Without input validation, attackers can submit malicious input such as SQL injection payloads or scripts.
+#             Validating input ensures the data matches expected format, length, and type.
+#             This prevents injection attacks, buffer overflow attempts, and malformed data entering your system.
+#             Input validation is one of the most important security controls in web applications.
+
+
         password = request.form["password"]
         DoB = request.form["dob"]
         dbHandler.insertUser(username, password, DoB)
