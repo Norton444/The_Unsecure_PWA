@@ -5,6 +5,9 @@ from flask import redirect
 from flask_cors import CORS
 import user_management as dbHandler
 
+from werkzeug.security import generate_password_hash
+#    -- #4
+
 # Code snippet for logging a message
 # app.logger.critical("message")
 
@@ -61,6 +64,14 @@ def signup():
 
 
         password = request.form["password"]
+        hashed_password = generate_password_hash(password)
+#       -- #4 Storing plain text passwords is extremely dangerous. If your database is leaked, attackers can 
+#             instantly get user passwords. Hashing passwords converts them into irreversible strings using 
+#             secure algorithms. So even if attackers access the database, they cannot easily recover the original
+#             password. I added the werkzeug security from python package which lets you hash passwords and check them
+#             securely when someone logs in. Therefore I don't have to write complicated code myself.
+
+
         DoB = request.form["dob"]
         dbHandler.insertUser(username, password, DoB)
         return render_template("/index.html")
